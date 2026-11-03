@@ -13,3 +13,5 @@ dist/
 htmlcov/
 *.pem
 dev-jwks.json
+evals/results/*
+!evals/results/.gitkeep
