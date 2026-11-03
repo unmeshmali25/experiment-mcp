@@ -1,0 +1,54 @@
+[
+  {
+    "id": "power-redemption",
+    "tool": "power_calc",
+    "arguments": {"metric": "proportion", "baseline": 0.1, "mde": 0.02, "alpha": 0.05, "power": 0.8}
+  },
+  {
+    "id": "mde-spend",
+    "tool": "power_calc",
+    "arguments": {"metric": "mean", "sigma": 1, "n_per_arm": 63, "alpha": 0.05, "power": 0.8}
+  },
+  {
+    "id": "assign-sample",
+    "tool": "assign_cells",
+    "arguments": {
+      "unit_ids": ["c00001", "c00002", "c00003", "c00004"],
+      "salt": "eval-salt",
+      "splits": {"control": 0.5, "treatment": 0.5}
+    }
+  },
+  {
+    "id": "srm-balanced",
+    "tool": "check_srm",
+    "arguments": {
+      "counts": {"control": 500, "treatment": 500},
+      "expected_weights": {"control": 0.5, "treatment": 0.5}
+    }
+  },
+  {
+    "id": "lift-redemption",
+    "tool": "analyze_lift",
+    "arguments": {"offer_id": "WEEKEND_15", "outcome": "redeemed", "ci_method": "normal"}
+  },
+  {
+    "id": "lift-spend-cuped",
+    "tool": "analyze_lift",
+    "arguments": {"offer_id": "WEEKEND_15", "outcome": "post_spend", "use_cuped": true, "ci_method": "normal"}
+  },
+  {
+    "id": "create-experiment",
+    "tool": "create_experiment",
+    "arguments": {
+      "name": "Weekend 15",
+      "hypothesis": "The weekend offer raises redemption.",
+      "primary_metric": "redeemed",
+      "offer_id": "WEEKEND_15"
+    }
+  },
+  {
+    "id": "list-experiments",
+    "tool": "list_experiments",
+    "arguments": {}
+  }
+]

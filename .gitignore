@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.experiment_mcp/
+*.db
+.dev-keys/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+*.pem
+dev-jwks.json
