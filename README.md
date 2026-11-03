@@ -210,18 +210,15 @@ Assistant calls `create_experiment`, reads `experiment://{id}/results`, then `dr
 uv run python -m experiment_mcp.evals
 ```
 
-It checks that every recorded call matches the expected tool and arguments, then runs those calls in-process. CI runs this.
+It checks that every recorded call matches the expected tool and arguments exactly, then runs those calls in-process. CI runs this. It does not call a model.
 
-Live mode is optional and off by default. It sends each task to an API and scores the tool the model picks. It needs `EXPERIMENT_MCP_EVAL_API_KEY`, `EXPERIMENT_MCP_EVAL_MODEL`, and `EXPERIMENT_MCP_EVAL_PROVIDER` (`anthropic` or `openai`).
+Live mode sends each task to OpenRouter and scores the tool call the model returns. The tool list is `tools/list` from this server, converted to the OpenAI tool format. Model calls are not executed. The default model is `openai/gpt-4o-mini`. `--model` overrides `EVAL_MODEL`. `--repeats` runs each task more than once. Results go to `evals/results/<model>-<date>.json` and a Markdown summary beside it. `tasks.json` has eight tasks, so the score is indicative, not a benchmark.
 
 ```bash
-EXPERIMENT_MCP_EVAL_PROVIDER=anthropic \
-EXPERIMENT_MCP_EVAL_MODEL=claude-sonnet-4-5 \
-EXPERIMENT_MCP_EVAL_API_KEY=... \
-uv run python -m experiment_mcp.evals --live
+OPENROUTER_API_KEY=... uv run python -m experiment_mcp.evals --live --model openai/gpt-4o-mini
 ```
 
-Offline success does not measure a model. Live success depends on the model and is not claimed here.
+In GitHub Actions, add the repository secret `OPENROUTER_API_KEY`, then open Actions, choose Evals (live), and run the workflow. The workflow is `workflow_dispatch` only. It writes the summary on the job and uploads `evals/results/` as an artifact. It does not run on push or pull request.
 
 ## Development
 

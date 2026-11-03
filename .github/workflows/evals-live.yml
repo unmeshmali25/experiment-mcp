@@ -1,0 +1,55 @@
+name: Evals (live)
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: OpenRouter model id
+        required: false
+        default: openai/gpt-4o-mini
+        type: string
+      repeats:
+        description: Repeats per task
+        required: false
+        default: "1"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+
+      - run: uv sync --frozen
+
+      - name: Require OpenRouter key
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if [ -z "${OPENROUTER_API_KEY}" ]; then
+            echo "OPENROUTER_API_KEY is not set. Add it as a repository Actions secret, then rerun this workflow."
+            exit 1
+          fi
+          echo "OPENROUTER_API_KEY is set."
+
+      - name: Run live evals
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          uv run python -m experiment_mcp.evals --live \
+            --model "${{ inputs.model }}" \
+            --repeats "${{ inputs.repeats }}"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: evals/results/
+          if-no-files-found: warn
