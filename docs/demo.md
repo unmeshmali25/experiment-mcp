@@ -138,3 +138,5 @@ The JSON `scope` is `experiments:read`. Point an MCP HTTP client at `http://127.
 `create_experiment` with a name, a hypothesis, and `primary_metric` `redeemed` fails as a tool error. The text includes `Missing required scope 'experiments:write'`.
 
 A token minted with `"scope":"experiments:write"` includes `experiments:read` as well. That token can create an experiment. A missing or invalid bearer token is HTTP 401 on `/mcp`, before a tool runs. `GET /.well-known/oauth-protected-resource/mcp` lists both scopes.
+
+A recorded run in opencode is in [demo-results](demo-results/README.md).
