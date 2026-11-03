@@ -1,0 +1,66 @@
+[project]
+name = "experiment-mcp"
+version = "0.1.0"
+description = "MCP server for designing and analyzing retail-offer experiments"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Unmesh Mali" }]
+requires-python = ">=3.12"
+dependencies = [
+    "mcp>=2.3.0,<3",
+    "numpy>=2.0",
+    "pyjwt[crypto]>=2.10",
+    "scipy>=1.14",
+]
+
+[project.scripts]
+experiment-mcp = "experiment_mcp.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/experiment_mcp"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore:The logging capability is deprecated:mcp.shared.exceptions.MCPDeprecationWarning",
+    "ignore:The sampling capability is deprecated:mcp.shared.exceptions.MCPDeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["experiment_mcp"]
+
+[tool.mypy]
+python_version = "3.12"
+packages = ["experiment_mcp"]
+disallow_untyped_defs = true
+warn_unused_ignores = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_redundant_casts = true
+
+[[tool.mypy.overrides]]
+module = ["scipy", "scipy.*", "scipy.stats"]
+ignore_missing_imports = true

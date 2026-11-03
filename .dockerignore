@@ -1,0 +1,14 @@
+.venv
+.git
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.experiment_mcp
+**/*.db
+.dev-keys
+**/__pycache__
+*.pem
+dev-jwks.json
+tests
+evals
+.github

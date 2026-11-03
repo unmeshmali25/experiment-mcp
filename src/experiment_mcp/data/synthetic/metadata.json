@@ -1,0 +1,21 @@
+{
+  "origin": "synthetic",
+  "not_real_customers": true,
+  "seed": 20261102,
+  "n_customers": 4000,
+  "offer_id": "WEEKEND_15",
+  "salt": "synthetic-v1",
+  "traffic_split": {
+    "control": 0.5,
+    "treatment": 0.5
+  },
+  "generator": "python -m experiment_mcp.synthetic",
+  "planted_dgp": {
+    "note": "Simulation settings used by the generator. They are not measured outcomes.",
+    "redemption_probability": {
+      "control": "0.08, plus 0.01 when pre_period_spend is above the sample median",
+      "treatment": "0.12, plus the same 0.01 nudge"
+    },
+    "post_spend": "max(0, 0.5 * pre_period_spend + 8 + treatment_shift + Normal(0, 3)); treatment_shift is 2.5"
+  }
+}

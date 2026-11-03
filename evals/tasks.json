@@ -1,0 +1,75 @@
+[
+  {
+    "id": "power-redemption",
+    "task": "How many customers per arm do I need to detect a 2 percentage point redemption lift from a 10% baseline at 80% power and alpha 0.05?",
+    "expected": {
+      "tool": "power_calc",
+      "arguments": {"metric": "proportion", "baseline": 0.1, "mde": 0.02, "alpha": 0.05, "power": 0.8}
+    }
+  },
+  {
+    "id": "mde-spend",
+    "task": "With 63 customers per arm and a spend standard deviation of 1, what absolute MDE can I detect at alpha 0.05 and 80% power?",
+    "expected": {
+      "tool": "power_calc",
+      "arguments": {"metric": "mean", "sigma": 1, "n_per_arm": 63, "alpha": 0.05, "power": 0.8}
+    }
+  },
+  {
+    "id": "assign-sample",
+    "task": "Assign customers c00001, c00002, c00003, and c00004 to a 50/50 control and treatment split using salt eval-salt.",
+    "expected": {
+      "tool": "assign_cells",
+      "arguments": {
+        "unit_ids": ["c00001", "c00002", "c00003", "c00004"],
+        "salt": "eval-salt",
+        "splits": {"control": 0.5, "treatment": 0.5}
+      }
+    }
+  },
+  {
+    "id": "srm-balanced",
+    "task": "Check whether 500 control and 500 treatment assignments mismatch a 50/50 intended split.",
+    "expected": {
+      "tool": "check_srm",
+      "arguments": {
+        "counts": {"control": 500, "treatment": 500},
+        "expected_weights": {"control": 0.5, "treatment": 0.5}
+      }
+    }
+  },
+  {
+    "id": "lift-redemption",
+    "task": "What is the redemption lift for offer WEEKEND_15 on the synthetic exposures, with a normal confidence interval?",
+    "expected": {
+      "tool": "analyze_lift",
+      "arguments": {"offer_id": "WEEKEND_15", "outcome": "redeemed", "ci_method": "normal"}
+    }
+  },
+  {
+    "id": "lift-spend-cuped",
+    "task": "Estimate the post-spend lift for WEEKEND_15 using CUPED on the pre-period covariate and a normal interval.",
+    "expected": {
+      "tool": "analyze_lift",
+      "arguments": {"offer_id": "WEEKEND_15", "outcome": "post_spend", "use_cuped": true, "ci_method": "normal"}
+    }
+  },
+  {
+    "id": "create-experiment",
+    "task": "Create a running experiment named Weekend 15 whose hypothesis is that the weekend offer raises redemption. Primary metric redeemed, offer WEEKEND_15.",
+    "expected": {
+      "tool": "create_experiment",
+      "arguments": {
+        "name": "Weekend 15",
+        "hypothesis": "The weekend offer raises redemption.",
+        "primary_metric": "redeemed",
+        "offer_id": "WEEKEND_15"
+      }
+    }
+  },
+  {
+    "id": "list-experiments",
+    "task": "List the experiments stored on this server.",
+    "expected": {"tool": "list_experiments", "arguments": {}}
+  }
+]
