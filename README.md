@@ -40,7 +40,7 @@ One server definition is enough for Claude Desktop, Claude Code, Cursor, and MCP
 
 Clients discover tools, resources, and prompts at runtime, with schemas generated from the function signatures. `close_experiment` can ask the user to confirm mid-call. `draft_readout` asks the client model to write prose, so this process has no model API key. Bootstrap `analyze_lift` reports progress. Creating or closing an experiment notifies subscribers. Resources and prompts are context, not just actions. `readOnlyHint` and `destructiveHint` are client hints. On HTTP, `experiments:read` and `experiments:write` are enforced per tool.
 
-A plain HTTP call is the better fit when no model is involved, when a single request/response is enough, or when the extra session and protocol machinery is not worth it. MCP does not replace ordinary API review. The comparison, including a schema side by side, is in [docs/mcp-vs-api.md](docs/mcp-vs-api.md). A short click-through is in [docs/demo.md](docs/demo.md).
+A plain HTTP call is the better fit when no model is involved, when a single request/response is enough, or when the extra session and protocol machinery is not worth it. MCP does not replace ordinary API review. The comparison, including a schema side by side, is in [docs/mcp-vs-api.md](docs/mcp-vs-api.md). A short click-through is in [docs/demo.md](docs/demo.md). How a call is dispatched, where the process runs, and how writes are gated is in [docs/design-faq.md](docs/design-faq.md).
 
 ## Feature matrix
 
